@@ -1,0 +1,5 @@
+public class fichaPaciente {
+    private String nombre;
+    private int edad;
+    private String sexo;
+}
