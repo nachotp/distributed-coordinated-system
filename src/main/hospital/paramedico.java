@@ -1,3 +1,5 @@
+package main.hospital;
+
 public class paramedico {
     private String  nombre;
     private String  rut;

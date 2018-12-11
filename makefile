@@ -25,28 +25,34 @@ SRC = $(shell find ./src -type f)
 OBJ = $(SRC:.java=.class)
 
 JC = javac
-
+JAR = jar
+JAR_FLAG = cvfm
+EXEC = Main.jar
+MANIFEST_PATH = ./META-INF
 JAVAC_COMPILE = $(JC) $(J_DIRECTORY_SOURCE) $(J_DIRECTORY_CLASS)
 
 #-----------------------------------------------------------------------
 # Default Java compilation
 #-----------------------------------------------------------------------
 
-default : bin $(OBJ)
+default : jar
 
 # Creation des .class dans le dossier bin.
 %.class: %.java
 		@$(JAVAC_COMPILE) $*.java
 
 # Creation du dossier bin
-bin : 
+bin: 
 	@mkdir -p ./bin/
 
+jar: bin $(OBJ)
+	$(JAR) $(JAR_FLAG) $(EXEC) $(MANIFEST_PATH)/MANIFEST -C $(J_DIRECTORY_CLASS_PATH) .
+
 # Clean up but keep executables
-clean :
+clean:
 	rm -Rfv bin/*
 
 # Détruit également le dossier bin
-fullclean : clean
+fullclean: clean
 	rmdir ./bin
 
