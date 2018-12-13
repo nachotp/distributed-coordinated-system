@@ -8,7 +8,7 @@ public class Main {
         try {
             serversito.runServer();
         } catch (Exception e) {
-            //TODO: handle exception
+            // TODO: handle exception
         }
 
         try {
