@@ -25,7 +25,9 @@ public class Server {
 
     static class InfoHandler implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
-            String response = "Use /get to download a PDF";
+            Headers h = t.getResponseHeaders();
+            h.add("Content-Type", "application/json");
+            String response = "{response: 'Use /get to download a PDF'}";
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
@@ -51,6 +53,7 @@ public class Server {
             t.sendResponseHeaders(200, file.length());
             OutputStream os = t.getResponseBody();
             os.write(bytearray, 0, bytearray.length);
+            bis.close();
             os.close();
         }
     }
