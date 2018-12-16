@@ -16,8 +16,8 @@ public class Client {
     int[] living;
 
     Client() {
-        this.IPs = new String[]{ "localhost:8000"};
-        this.living = new boolean[IPs.length];
+        this.IPs = new String[]{ "localhost:8000","192.168.1.115:8000"};
+        this.living = new int[IPs.length];
     }
 
     public void heartbeat(int age) {
