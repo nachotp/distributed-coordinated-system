@@ -16,7 +16,7 @@ public class Client {
     boolean[] living;
 
     Client() {
-        this.IPs = new String[]{ "localhost:8000" };
+        this.IPs = new String[]{ "192.168.1.115:8000", "192.168.1.233:8000" };
         this.living = new boolean[IPs.length];
     }
 
