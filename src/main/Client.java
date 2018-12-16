@@ -14,19 +14,31 @@ public class Client {
     private final String USER_AGENT = "Mozilla/5.0";
     private String[] IPs;
     int[] living;
+    int coordinator;
 
     Client() {
+<<<<<<< HEAD
         this.IPs = new String[]{ "localhost:8000","192.168.1.115:8000"};
+=======
+        this.IPs = new String[]{ "localhost:8000", "192.168.10.2:8000"};
+>>>>>>> 8e406c62f8272a946a71fd6300c50d4d91c2467b
         this.living = new int[IPs.length];
     }
 
     public void heartbeat(int age) {
         int i = 0;
-        for (String url : this.IPs){
+        int max = -1;
+        int idx = -1;
+        for (i = 0; i < IPs.length; i++){
+            String url = IPs[i];
             try {
                 int res = Integer.valueOf(sendGet(url, "heartbeat"));
                 if (res > 0) {
                     this.living[i] = res;
+                    if (max < res) {
+                        max = res;
+                        idx = i;
+                    }
                     System.out.println(url + " is alive: "+ String.valueOf(res));
                 } else {
                     this.living[i] = -1;
@@ -37,9 +49,8 @@ public class Client {
                 System.out.println(url + " is dead ");
                 //e.printStackTrace();
             }
-            
-            i++;
-        } 
+        }
+        this.coordinator = idx;
     }
 
     // HTTP GET request
