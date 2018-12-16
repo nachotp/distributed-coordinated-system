@@ -16,29 +16,21 @@ public class Client {
     boolean[] living;
 
     Client() {
-        this.IPs = new String[]{ "localhost:8000", "localhost:8000" };
+        this.IPs = new String[]{ "localhost:8000"};
         this.living = new boolean[IPs.length];
     }
 
-
-
-    public void runClient() throws Exception {
-        System.out.println("Testing 1 - Send Http GET request");
-        heartbeat();
-
-    }
-
-    public void heartbeat() {
+    public void heartbeat(int age) {
         int i = 0;
         for (String url : this.IPs){
             try {
                 String res = sendGet(url, "heartbeat");
                 if (res.equals("alive")) {
                     this.living[i] = true;
-                    System.out.println(url + " is alive: " + res);
+                    System.out.println(url + " is alive");
                 } else {
                     this.living[i] = false;
-                    System.out.println(url + " is dead " + res);
+                    System.out.println(url + " is dead");
                 }
             } catch (Exception e) {
                 this.living[i] = false;

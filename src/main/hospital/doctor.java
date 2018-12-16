@@ -3,11 +3,11 @@ package main.hospital;
 import java.util.*;
 
 public class doctor {
-    private String  nombre;
-    private String  apellido;
-    private int id;
-    private int  experiencia;
-    private int estudios;
+    public String  nombre;
+    public String  apellido;
+    public int id;
+    public int  experiencia;
+    public int estudios;
 
     public doctor(int ide, String name, String lastname, int experience, int studies) {
         nombre = name;

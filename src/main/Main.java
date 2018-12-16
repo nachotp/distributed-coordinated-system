@@ -10,10 +10,10 @@ import org.json.simple.parser.ParseException;
 import java.util.*;
 
 public class Main {
-
+    public static requerimiento currReq;
     public static void main (String args[]) {
-        Server serversito = new Server();
-        Client clientillo = new Client();
+        Server server = new Server();
+        Client cliente = new Client();
         Scanner scanner = new Scanner(System.in);
         JSONParser parser = new JSONParser();
         JSONObject iter;
@@ -81,7 +81,7 @@ public class Main {
                     String llaveid = String.valueOf((String)llave[0]);
                     procedimientos.put(llaveid,(String)iter1.get(llaveid));
                 }
-                req = new requerimiento((int) (long) iter.get("id"), (String)iter.get("cargo"),procedimientos);
+                req = new requerimiento((int) (long) iter.get("id"), (String)iter.get("cargo"), procedimientos);
                 listaRequerimientos.add(req);
             }
             System.out.println("lo hice");
@@ -91,14 +91,17 @@ public class Main {
 		}
 
         try {
-            serversito.runServer();
+            server.runServer();
         } catch (Exception e) {}
 
         scanner.nextLine();
 
-        try {
-            clientillo.runClient();
-        } catch (Exception e) {}
-    }
 
+        while (!listaRequerimientos.isEmpty()) {
+            currReq = listaRequerimientos.remove(0);
+            doctor doc = listaDoctores.get(currReq.id-1);
+            cliente.heartbeat(doc.experiencia + doc.estudios);
+        }
+    }
+    
 }
