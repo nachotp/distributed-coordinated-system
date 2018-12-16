@@ -11,6 +11,7 @@ import java.util.*;
 
 public class Main {
     public static requerimiento currReq;
+    public static boolean wait;
     public static void main (String args[]) {
         Server server = new Server();
         Client cliente = new Client();
@@ -39,6 +40,7 @@ public class Main {
         List<String> examNorealizados = new ArrayList<String>();
         List<String> medRecetados = new ArrayList<String>();
         List<String> medSuministrados = new ArrayList<String>();
+
         try{
             Object obj = parser.parse(new FileReader("data/funcionarios.JSON"));
             JSONObject jsonObject = (JSONObject) obj;
@@ -157,12 +159,19 @@ public class Main {
 
         scanner.nextLine();
 
+        wait = false;
 
         while (!listaRequerimientos.isEmpty()) {
+            // Sincronizar doctores
             currReq = listaRequerimientos.remove(0);
             doctor doc = listaDoctores.get(currReq.id-1);
+            server.setDoc(doc);
             cliente.heartbeat(doc.experiencia + doc.estudios);
+
+            String dummy = scanner.nextLine();
+            
         }
+
     }
     
 }

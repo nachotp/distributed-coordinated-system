@@ -13,7 +13,7 @@ public class Client {
 
     private final String USER_AGENT = "Mozilla/5.0";
     private String[] IPs;
-    boolean[] living;
+    int[] living;
 
     Client() {
         this.IPs = new String[]{ "localhost:8000"};
@@ -24,16 +24,16 @@ public class Client {
         int i = 0;
         for (String url : this.IPs){
             try {
-                String res = sendGet(url, "heartbeat");
-                if (res.equals("alive")) {
-                    this.living[i] = true;
-                    System.out.println(url + " is alive");
+                int res = Integer.valueOf(sendGet(url, "heartbeat"));
+                if (res > 0) {
+                    this.living[i] = res;
+                    System.out.println(url + " is alive: "+ String.valueOf(res));
                 } else {
-                    this.living[i] = false;
+                    this.living[i] = -1;
                     System.out.println(url + " is dead");
                 }
             } catch (Exception e) {
-                this.living[i] = false;
+                this.living[i] = -1;
                 System.out.println(url + " is dead ");
                 //e.printStackTrace();
             }

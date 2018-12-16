@@ -19,6 +19,10 @@ public class Server {
 
     static doctor curDoctor;
 
+    public void setDoc(doctor doc){
+        curDoctor = doc;
+    }
+
     public void runServer() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
         System.out.println("Server inicializado.");
