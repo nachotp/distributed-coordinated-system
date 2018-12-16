@@ -21,7 +21,8 @@ public class Main {
             JSONArray Doctors = (JSONArray) jsonObject.get("Doctor");
             Iterator<JSONObject> iterator = Doctors.iterator();
 			while (iterator.hasNext()) {
-                System.out.println(iterator.next().toJSONString());
+                String nombre = (String) iterator.next().get("nombre");
+                System.out.println(nombre);
             }
         } catch (Exception e) {
 			//manejo de error
