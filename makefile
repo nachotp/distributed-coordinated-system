@@ -36,12 +36,14 @@ JAVAC_COMPILE = $(JC) $(J_DIRECTORY_SOURCE) $(J_DIRECTORY_CLASS)
 # Default Java compilation
 #-----------------------------------------------------------------------
 
-default : jar
+default : run
 
 # Creation des .class dans le dossier bin.
 %.class: %.java
-		@$(JAVAC_COMPILE) $*.java
+	@$(JAVAC_COMPILE)  -cp $(LIBS) $*.java
 
+run: bin $(OBJ)
+	java -cp bin:$(LIBS) main.Main
 # Creation du dossier bin
 bin: 
 	@mkdir -p ./bin/
