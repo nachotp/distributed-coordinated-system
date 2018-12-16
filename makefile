@@ -29,6 +29,7 @@ JAR = jar
 JAR_FLAG = cvfm
 EXEC = Main.jar
 MANIFEST_PATH = ./META-INF
+LIBS = lib/json.jar
 JAVAC_COMPILE = $(JC) $(J_DIRECTORY_SOURCE) $(J_DIRECTORY_CLASS)
 
 #-----------------------------------------------------------------------
@@ -46,7 +47,7 @@ bin:
 	@mkdir -p ./bin/
 
 jar: bin $(OBJ)
-	$(JAR) $(JAR_FLAG) $(EXEC) $(MANIFEST_PATH)/MANIFEST -C $(J_DIRECTORY_CLASS_PATH) .
+	$(JAR) $(JAR_FLAG) -cp $(LIBS) $(EXEC) $(MANIFEST_PATH)/MANIFEST -C $(J_DIRECTORY_CLASS_PATH) .
 
 # Clean up but keep executables
 clean:
