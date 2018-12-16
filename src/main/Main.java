@@ -31,16 +31,13 @@ public class Main {
         try {
             serversito.runServer();
         } catch (Exception e) {
-            // TODO: handle exception
+           
         }
-        String input = scanner.nextLine();
         try {
             clientillo.runClient();
         } catch (Exception e) {
             
         }
-        
-        System.out.println("SOS\n");
     }
 
 }

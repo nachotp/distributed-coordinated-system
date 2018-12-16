@@ -2,6 +2,7 @@ package main;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,30 +12,62 @@ import javax.net.ssl.HttpsURLConnection;
 public class Client {
 
     private final String USER_AGENT = "Mozilla/5.0";
+    private String[] IPs;
+    boolean[] living;
+
+    Client() {
+        this.IPs = new String[]{ "localhost:8000" };
+        this.living = new boolean[IPs.length];
+    }
+
+
 
     public void runClient() throws Exception {
-
-        
-
         System.out.println("Testing 1 - Send Http GET request");
-        this.sendGet();
+        heartbeat();
+
+    }
+
+    public void heartbeat() {
+        int i = 0;
+        for (String url : this.IPs){
+            try {
+                String res = sendGet(url, "heartbeat");
+                if (res.equals("alive")) {
+                    this.living[i] = true;
+                    System.out.println(url + " is alive: " + res);
+                } else {
+                    this.living[i] = false;
+                    System.out.println(url + " is dead " + res);
+                }
+            } catch (Exception e) {
+                this.living[i] = false;
+                System.out.println(url + " is dead ");
+                e.printStackTrace();
+            }
+            
+            i++;
+        } 
     }
 
     // HTTP GET request
-    public void sendGet() throws Exception {
+    public String sendGet(String url, String route) throws Exception {
 
-        String url = "http://localhost:8000/info";
-
-        URL obj = new URL(url);
+        URL obj = new URL("http://" +url+ "/" + route);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         // optional default is GET
         con.setRequestMethod("GET");
-
+        int responseCode = 0;
         // add request header
         con.setRequestProperty("User-Agent", USER_AGENT);
-
-        int responseCode = con.getResponseCode();
+        try {
+            responseCode = con.getResponseCode();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+        
         System.out.println("\nSending 'GET' request to URL : " + url);
         System.out.println("Response Code : " + responseCode);
 
@@ -48,7 +81,7 @@ public class Client {
         in.close();
 
         // print result
-        System.out.println(response.toString());
+        return response.toString();
 
     }
 
