@@ -19,6 +19,7 @@ public class Server {
         System.out.println("Server inicializado.");
         server.createContext("/info", new InfoHandler());
         server.createContext("/get", new GetHandler());
+        server.createContext("/heartbeat", new AliveHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
     }
@@ -28,6 +29,18 @@ public class Server {
             Headers h = t.getResponseHeaders();
             h.add("Content-Type", "application/json");
             String response = "{response: 'Use /get to download a PDF'}";
+            t.sendResponseHeaders(200, response.length());
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    static class AliveHandler implements HttpHandler {
+        public void handle(HttpExchange t) throws IOException {
+            Headers h = t.getResponseHeaders();
+            h.add("Content-Type", "application/json");
+            String response = "alive";
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
