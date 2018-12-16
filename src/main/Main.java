@@ -50,17 +50,31 @@ public class Main {
             Iterator<JSONObject> iteratorPar = doctors.iterator();
 			while (iteratorDoc.hasNext()) {
                 iter = iteratorDoc.next();
-                medico = new doctor((int) (long) iter.get("id"),(String) iter.get("nombre"),(String)iter.get("apellido"),(int) (long)iter.get("experiencia"),(int) (long) iter.get("estudios"));
+                medico = new doctor((int) (long) iter.get("id"),
+                                    (String) iter.get("nombre"),
+                                    (String)iter.get("apellido"),
+                                    (int) (long)iter.get("experiencia"),
+                                    (int) (long) iter.get("estudios"));
                 listaDoctores.add(medico);
             }
             while (iteratorEnf.hasNext()) {
                 iter = iteratorEnf.next();
-                enf = new enfermero((int) (long) iter.get("id"),(String) iter.get("nombre"),(String)iter.get("apellido"),(int) (long)iter.get("experiencia"),(int) (long) iter.get("estudios"));
+                enf = new enfermero((int) (long) iter.get("id"),
+                                    (String) iter.get("nombre"),
+                                    (String)iter.get("apellido"),
+                                    (int) (long)iter.get("experiencia"),
+                                    (int) (long) iter.get("estudios"));
+
                 listaEnfermeros.add(enf);
             }
             while (iteratorPar.hasNext()) {
                 iter = iteratorPar.next();
-                param = new paramedico((int) (long) iter.get("id"),(String) iter.get("nombre"),(String)iter.get("apellido"),(int) (long)iter.get("experiencia"),(int) (long) iter.get("estudios"));
+                param = new paramedico((int) (long) iter.get("id"),
+                                       (String) iter.get("nombre"),
+                                       (String)iter.get("apellido"),
+                                       (int) (long)iter.get("experiencia"),
+                                       (int) (long) iter.get("estudios"));
+
                 listaParamedicos.add(param);
             }
             obj = parser.parse(new FileReader("data/requerimientos.JSON"));
