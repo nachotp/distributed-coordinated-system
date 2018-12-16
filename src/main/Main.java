@@ -38,14 +38,13 @@ public class Main {
 
         try {
             serversito.runServer();
-        } catch (Exception e) {
-        scanner.nextLine();   
-        }
+        } catch (Exception e) {}
+
+        scanner.nextLine();
+
         try {
             clientillo.runClient();
-        } catch (Exception e) {
-            
-        }
+        } catch (Exception e) {}
     }
 
 }
