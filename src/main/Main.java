@@ -17,12 +17,15 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         JSONParser parser = new JSONParser();
         JSONObject iter;
+        JSONObject iter1;
         doctor medico;
         enfermero enf;
         paramedico param;
+        requerimiento req;
         List<doctor> listaDoctores= new ArrayList<doctor>();
         List<enfermero> listaEnfermeros= new ArrayList<enfermero>();
         List<paramedico> listaParamedicos= new ArrayList<paramedico>();
+        List<requerimiento> listaRequerimientos= new ArrayList<requerimiento>();
         try{
             Object obj = parser.parse(new FileReader("data/funcionarios.JSON"));
             JSONObject jsonObject = (JSONObject) obj;
@@ -47,6 +50,27 @@ public class Main {
                 param = new paramedico((int) (long) iter.get("id"),(String) iter.get("nombre"),(String)iter.get("apellido"),(int) (long)iter.get("experiencia"),(int) (long) iter.get("estudios"));
                 listaParamedicos.add(param);
             }
+            obj = parser.parse(new FileReader("data/requerimientos.JSON"));
+            jsonObject = (JSONObject) obj;
+            JSONArray requerimientos = (JSONArray) jsonObject.get("requerimientos");
+            Iterator<JSONObject> iteratorReq = requerimientos.iterator();
+            while (iteratorReq.hasNext()) {
+                iter = iteratorReq.next();
+                System.out.println(iter.get("id"));
+                System.out.println(iter.get("cargo"));
+                Iterator<JSONObject> pacientes =( (JSONArray) iter.get("pacientes")).iterator();
+                HashMap<String, String> procedimientos = new HashMap<>(); 
+                while (pacientes.hasNext()) {
+                    iter1 = pacientes.next();
+                    Set keys = iter1.keySet();
+                    Object[] llave = keys.toArray();
+                    String llaveid = String.valueOf((String)llave[0]);
+                    procedimientos.put(llaveid,(String)iter1.get(llaveid));
+                }
+                req = new requerimiento((int) (long) iter.get("id"), (String)iter.get("cargo"),procedimientos);
+                listaRequerimientos.add(req);
+            }
+            System.out.println("lo hice");
             
         } catch (Exception e) {
 			e.printStackTrace();
