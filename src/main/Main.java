@@ -15,16 +15,25 @@ public class Main {
         Client clientillo = new Client();
         Scanner scanner = new Scanner(System.in);
         JSONParser parser = new JSONParser();
+        JSONObject doctor;
+        String nombre;
+        String apellido;
+        int experiencia;
+        int estudios;
         try{
             Object obj = parser.parse(new FileReader("data/funcionarios.JSON"));
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray Doctors = (JSONArray) jsonObject.get("Doctor");
             Iterator<JSONObject> iterator = Doctors.iterator();
 			while (iterator.hasNext()) {
-                System.out.println(iterator.next().toJSONString());
+                doctor = iterator.next();
+                nombre = (String) doctor.get("nombre");
+                apellido = (String) doctor.get("apellido");
+                experiencia = (int) (long)doctor.get("experiencia");
+                estudios = (int) (long) doctor.get("estudios");
             }
         } catch (Exception e) {
-			//manejo de error
+			e.printStackTrace();
 		}
 
         try {
