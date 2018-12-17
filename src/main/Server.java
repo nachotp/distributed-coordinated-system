@@ -57,6 +57,30 @@ public class Server {
         Main.this.listaPacientes.set(id - 1, pac);
         return true;
     }  
+    
+    public void makeChanges(int id,String accion, String opcion){
+        paciente pac = cte.listaPacientes.get(id-1);
+        switch (accion) { //ver cual es el procedimiento
+            case "1":
+                pac.medRecetados.add(opcion);
+                break;
+            case "2":
+                pac.medSuministrados.add(opcion);
+                break;
+            case "3":
+                pac.procCompletados.add(opcion);
+                break;
+            case "4":
+                pac.procAsignados.add(opcion);
+                break;
+            case "5":
+                pac.examNorealizados.add(opcion);
+                break;
+            case "6":
+                pac.examRealizados.add(opcion);
+                break;
+        }
+    }
 
     public void pushChangeIfCoord(HashMap<String,String> data){
         if (cliente.coordinating)
@@ -67,7 +91,7 @@ public class Server {
             Headers h = t.getResponseHeaders();
             URI uri = t.getRequestURI();
             HashMap<String,String> data = paramDeserializer(uri.getQuery());
-            // Revisar LOCK
+            makeChanges(Integer.valueOf(data.get("id")), (String)data.get("accion"),(String)data.get("opcion"));
             boolean success = tryLock(Integer.valueOf(data.get("id")));
             String response = String.valueOf(success);
             t.sendResponseHeaders(200, response.length());
