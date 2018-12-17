@@ -13,14 +13,15 @@ import javax.net.ssl.HttpsURLConnection;
 import com.sun.net.httpserver.Authenticator.Success;
 
 public class Client {
-
+    private Constants cte;
     private final String USER_AGENT = "Mozilla/5.0";
     private String[] IPs;
     int[] living;
     public boolean coordinating;
     int coordinator;
 
-    Client() {
+    Client(Constants cte) {
+        this.cte = cte;
         this.IPs = new String[]{ "localhost:8000"};
         this.living = new int[IPs.length];
         this.coordinating = false;
@@ -70,11 +71,11 @@ public class Client {
         return success;
     }
 
-    /*public boolean pushProcedure(HashMap<String, String> data) {
+    public boolean pushProcedure(HashMap<String, String> data) {
         String params = paramSerializer(data);
         String url = IPs[coordinator];
-        return Boolean.valueOf(sendGet(url, "commit", params));
-    }*/
+        return true; //Boolean.valueOf(sendGet(url, "commit", params));
+    }
 
     // HTTP GET request
     public String sendGet(String url, String route) throws Exception {

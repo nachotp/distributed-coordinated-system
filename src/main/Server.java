@@ -23,7 +23,7 @@ public class Server {
     private static final String AND_DELIMITER = "&";
     private static final String EQUAL_DELIMITER = "=";
     public static Client cliente;
-
+    public static Constants cte;
     static doctor curDoctor;
     HttpServer server;
 
@@ -35,8 +35,9 @@ public class Server {
         server.stop(0);
     }
 
-    Server(Client cle){
+    Server(Client cle, Constants cte){
         cliente = cle;
+        this.cte = cte;
     }
 
     public void runServer() throws Exception { // Inicia servidor y crea rutas
@@ -50,15 +51,24 @@ public class Server {
     }
 
     public boolean tryLock(int id){
-        paciente pac = Main.this.listaPacientes.get(id-1);
+        paciente pac = cte.listaPacientes.get(id-1);
         if (pac.locked)
             return false;
         pac.locked = true;
-        Main.this.listaPacientes.set(id - 1, pac);
+        System.out.println("Paciente "+ String.valueOf(id) + " bloqueado");
+        cte.listaPacientes.set(id - 1, pac);
         return true;
     }  
 
+    public void unlock(int id){
+        paciente pac = cte.listaPacientes.get(id - 1);
+        pac.locked = false;
+        System.out.println("Paciente " + String.valueOf(id - 1) + " desbloqueado");
+        cte.listaPacientes.set(id - 1, pac);
+    }
+
     public void pushChangeIfCoord(HashMap<String,String> data){
+
         if (cliente.coordinating)
             cliente.pushProcedure(data);
     }
@@ -110,7 +120,7 @@ public class Server {
     }
 
 
-    private HashMap<String, String> paramDeserializer(String query) { // Toma queryGet y la transforma en un HashMap
+    private HashMap<String, String> paramDeserializer(String query) { // Toma query Get y la transforma en un HashMap
         //Get the request query
         HashMap<String, String> data = new HashMap<>();
         if (query != null) {
