@@ -214,6 +214,24 @@ public class Main {
                 
             }
             
+=======
+        coord = false;
+
+        while (!listaRequerimientos.isEmpty()) {
+            // Sincronizar doctores
+            currReq = listaRequerimientos.remove(0);
+            doctor doc = listaDoctores.get(currReq.id-1);
+            server.setDoc(doc);
+            coord = cliente.heartbeat(doc.experiencia + doc.estudios);
+            Iterator it = currReq.procedimientos.entrySet().iterator();
+
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry)it.next();
+                System.out.println(pair.getKey() + " = " + pair.getValue());
+            }
+
+            String dummy = scanner.nextLine();
+>>>>>>> 9e6a1bd754bf84d000f7c7a88162a6c8ded06539
         }
 
         server.close();
