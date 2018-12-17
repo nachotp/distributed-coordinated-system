@@ -3,6 +3,7 @@ import java.util.*;
 public class paciente{
     private String  nombre;
     private String  rut;
+    public Boolean locked;
     private int  edad;
     private List<String> enfermedades;
     private List<String> procAsignados;
@@ -22,5 +23,6 @@ public class paciente{
         examNorealizados = examN;
         medRecetados = medR;
         medSuministrados = medS;
+        locked = false;
     }
 }

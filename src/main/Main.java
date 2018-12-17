@@ -156,15 +156,59 @@ public class Main {
         scanner.nextLine();
 
         wait = false;
-
+        String[] splitter;
+        String id;
+        String proc;
+        HashMap<String, String> logInfo; 
         while (!listaRequerimientos.isEmpty()) {
             // Sincronizar doctores
             currReq = listaRequerimientos.remove(0);
-            doctor doc = listaDoctores.get(currReq.id-1);
-            server.setDoc(doc);
-            cliente.heartbeat(doc.experiencia + doc.estudios);
-
-            String dummy = scanner.nextLine();
+            for (Map.Entry<String, String> entry : currReq.procedimientos.entrySet()) {
+                id= entry.getKey();
+                proc = entry.getValue();
+                splitter = proc.split(" ");
+                logInfo.put("id",id);
+                logInfo.put("opcion",splitter[1]);
+                switch (splitter[0]) {
+                    case "recetar":
+                        System.out.println("recetandole al zapo qlo");
+                        logInfo.put("accion",1);
+                        break;
+                    case "suministrar":
+                        System.out.println("suministrandole al zapo qlo");
+                        logInfo.put("accion",2);
+                        break;
+                    case "colocar":
+                        logInfo.put("accion",3);
+                        break;
+                    case "solicitar":
+                        logInfo.put("accion",4);
+                        break;
+                    case "pedir":
+                        logInfo.put("accion",5);
+                        break;
+                    case "realizar":
+                        logInfo.put("accion",6);
+                        break;
+                }
+                if(currReq.cargo.equals("doctor")){
+                    doctor doc = listaDoctores.get(currReq.id-1);
+                    System.out.println("soy el diostor");
+                    server.setDoc(doc);
+                    cliente.heartbeat(doc.experiencia + doc.estudios);
+                }
+                else if(currReq.cargo.equals("enfermero")){
+                    enfermero nurse = listaEnfermeros.get(currReq.id-1);
+                    System.out.println("soy el nursito");
+                }
+                else{
+                    paramedico paramedic = listaParamedicos.get(currReq.id-1);
+                    System.out.println("soy el paramedico");
+                }
+                String dummy = scanner.nextLine();
+            
+                
+            }
             
         }
 

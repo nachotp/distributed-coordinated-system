@@ -17,11 +17,7 @@ public class Client {
     int coordinator;
 
     Client() {
-<<<<<<< HEAD
-        this.IPs = new String[]{ "localhost:8000","192.168.1.115:8000"};
-=======
         this.IPs = new String[]{ "localhost:8000", "192.168.10.2:8000"};
->>>>>>> 8e406c62f8272a946a71fd6300c50d4d91c2467b
         this.living = new int[IPs.length];
     }
 
