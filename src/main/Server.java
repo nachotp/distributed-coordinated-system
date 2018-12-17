@@ -21,7 +21,7 @@ import com.sun.net.httpserver.Headers;
 public class Server {
 
     private static final String AND_DELIMITER = "&";
-    private static final String EQUAL_DELIMITER = "=";
+    private static final String EQUAL_DELIMITER = " =";
     public static Client cliente;
     public static Constants cte;
     static doctor curDoctor;
