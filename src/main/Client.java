@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -17,11 +18,16 @@ public class Client {
     int coordinator;
 
     Client() {
+<<<<<<< HEAD
         this.IPs = new String[]{ "localhost:8000", "192.168.10.2:8000"};
+=======
+        this.IPs = new String[]{ "localhost:8000","192.168.1.115:8000"};
+
+>>>>>>> 9bc14a5431d19c04917b1a749f9d6d15bac96113
         this.living = new int[IPs.length];
     }
 
-    public void heartbeat(int age) {
+    public boolean heartbeat(int age) {
         int i = 0;
         int max = -1;
         int idx = -1;
@@ -47,12 +53,26 @@ public class Client {
             }
         }
         this.coordinator = idx;
+        return (max == age)? true : false;
     }
+
+    public boolean commitProcedure(HashMap<String, String> data){
+        String params = paramSerializer(data);
+        String url = IPs[coordinator];
+        return Boolean.valueOf(sendGet(url, "commit", params));
+    }
+
 
     // HTTP GET request
     public String sendGet(String url, String route) throws Exception {
+        return sendGet(url, route, "");
+    }
 
-        URL obj = new URL("http://" +url+ "/" + route);
+    public String sendGet(String url, String route, String params) throws Exception {
+        String urlReq = "http://" +url+ "/" + route;
+        if (!params.equals("")) urlReq += "/" + params;
+
+        URL obj = new URL(urlReq);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         // optional default is GET
@@ -81,44 +101,15 @@ public class Client {
 
     }
 
-    // HTTP POST request
-    private void sendPost() throws Exception {
-
-        String url = "https://selfsolve.apple.com/wcResults.do";
-        URL obj = new URL(url);
-        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-
-        // add reuqest header
-        con.setRequestMethod("POST");
-        con.setRequestProperty("User-Agent", USER_AGENT);
-        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-        String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
-
-        // Send post request
-        con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(urlParameters);
-        wr.flush();
-        wr.close();
-
-        int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post parameters : " + urlParameters);
-        System.out.println("Response Code : " + responseCode);
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+    // SERIALIZACION DE PARAMETROS PARA PASO POR GET
+    public String paramSerializer(HashMap<String, String> data){
+        Iterator it = data.entrySet().iterator();
+        String serialized = "?";
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            serialized += pair.getKey() + "=" + pair.getValue() + "&";
         }
-        in.close();
-
-        // print result
-        System.out.println(response.toString());
-
+        return serialized.substring(0, serialized.length()-1);
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.*;
 
 public class Main {
     public static requerimiento currReq;
-    public static boolean wait;
+    public static boolean coord;
     public static void main (String args[]) {
         Server server = new Server();
         Client cliente = new Client();
@@ -155,6 +155,7 @@ public class Main {
 
         scanner.nextLine();
 
+<<<<<<< HEAD
         wait = false;
         String[] splitter;
         String id;
@@ -210,8 +211,27 @@ public class Main {
                 
             }
             
+=======
+        coord = false;
+
+        while (!listaRequerimientos.isEmpty()) {
+            // Sincronizar doctores
+            currReq = listaRequerimientos.remove(0);
+            doctor doc = listaDoctores.get(currReq.id-1);
+            server.setDoc(doc);
+            coord = cliente.heartbeat(doc.experiencia + doc.estudios);
+            Iterator it = currReq.procedimientos.entrySet().iterator();
+            
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry)it.next();
+                System.out.println(pair.getKey() + " = " + pair.getValue());
+            }
+
+            String dummy = scanner.nextLine();
+>>>>>>> 9bc14a5431d19c04917b1a749f9d6d15bac96113
         }
 
+        server.close();
     }
     
 }

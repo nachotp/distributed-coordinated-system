@@ -10,6 +10,8 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import java.net.URI;
+import java.util.HashMap;
 
 import main.hospital.doctor;
 
@@ -17,14 +19,23 @@ import com.sun.net.httpserver.Headers;
 
 public class Server {
 
+    private static final String AND_DELIMITER = "&";
+    private static final String EQUAL_DELIMITER = "=";
+
+
     static doctor curDoctor;
+    HttpServer server;
 
     public void setDoc(doctor doc){
         curDoctor = doc;
     }
 
+    public void close(){
+        server.stop(0);
+    }
+
     public void runServer() throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+        server = HttpServer.create(new InetSocketAddress(8000), 0);
         System.out.println("Server inicializado.");
         server.createContext("/info", new InfoHandler());
         server.createContext("/heartbeat", new AliveHandler());
@@ -57,4 +68,21 @@ public class Server {
         }
     }
 
+
+    private HashMap<String, String> paramDeserializer(URI uri) {
+        //Get the request query
+        HashMap<String, String> data = new HashMap<>();
+        String query = uri.getQuery();
+        if (query != null) {
+            System.out.println("Dese: " + query);
+            String[] queryParams = query.split(AND_DELIMITER);
+            if (queryParams.length > 0) {
+                for (String qParam : queryParams) {
+                    String[] param = qParam.split(EQUAL_DELIMITER);
+                    data.put(param[0], param[1]);
+                }
+            }
+        }
+        return data;
+    }
 }
