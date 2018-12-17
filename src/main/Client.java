@@ -22,7 +22,7 @@ public class Client {
 
     Client(Constants cte) {
         this.cte = cte;
-        this.IPs = new String[]{ "192.168.1.115:8000", "192.168.1.116:8000"};
+        this.IPs = new String[]{ "192.168.1.115:8000", "192.168.10.2:8000"};
         this.living = new int[IPs.length];
         this.coordinating = false;
     }

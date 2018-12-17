@@ -94,11 +94,16 @@ public class Server {
 
     class CommitHandler implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
+            String response;
             Headers h = t.getResponseHeaders();
             URI uri = t.getRequestURI();
             HashMap<String,String> data = paramDeserializer(uri.getQuery());
             boolean success = tryLock(Integer.valueOf(data.get("id")));
-            String response = String.valueOf(success);
+            if (success) {
+                response = "true";
+            } else {
+                response = "false";
+            }
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
