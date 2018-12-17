@@ -193,7 +193,7 @@ public class Main {
                     doctor doc = cte.listaDoctores.get(currReq.id-1);
                     server.setDoc(doc);
                     coord = cliente.heartbeat(doc.experiencia + doc.estudios);
-                    while (cte.heartbeat);
+                    while (cte.heartbeat > 0);
                     if (coord) {
                         System.out.println("Asignado como coordinador.");
                     } else {
