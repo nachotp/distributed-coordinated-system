@@ -101,14 +101,16 @@ public class Server {
             boolean success = tryLock(Integer.valueOf(data.get("id")));
             if (success) {
                 response = "true";
+                System.out.println("Enviando cambios.");
             } else {
                 response = "false";
+                System.out.println("Objeto bloqueado por otro usuario.");
             }
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
-            System.out.println("Enviando cambios");
+           
         }
     }
 

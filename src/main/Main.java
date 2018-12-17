@@ -211,7 +211,8 @@ public class Main {
                 else{
                     paramedico paramedic = cte.listaParamedicos.get(currReq.id-1);
                 }
-                
+                System.out.println(String.valueOf(cliente.paramSerializer(logInfo)));
+
                 boolean commitSuccess = cliente.commitProcedure(logInfo);
                 cte.wait = true;
                 if (coord && commitSuccess){
