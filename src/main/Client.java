@@ -31,6 +31,7 @@ public class Client {
         int i = 0;
         int max = -1;
         int idx = -1;
+        cte.heartbeat = IPs.length;
         for (i = 0; i < IPs.length; i++){
             String url = IPs[i];
             try {
@@ -48,6 +49,7 @@ public class Client {
                 this.living[i] = -1;
                 //e.printStackTrace();
             }
+            cte.heartbeat -= 1;
         }
         this.coordinator = idx;
         coordinating = (max == age) ? true : false;

@@ -17,6 +17,7 @@ public class Constants {
     public List<String> medRecetados;
     public List<String> medSuministrados;
     public boolean wait;
+    int heartbeat;
     Constants(){
         listaDoctores = new ArrayList<doctor>();
         listaEnfermeros = new ArrayList<enfermero>();
