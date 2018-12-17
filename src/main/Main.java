@@ -45,13 +45,13 @@ public class Main {
             Object obj = parser.parse(new FileReader("data/funcionarios.JSON"));
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray doctors = (JSONArray) jsonObject.get("Doctor");
-            Iterator<JSONObject> iteratorDoc = doctors.iterator();
+            Iterator iteratorDoc = doctors.iterator();
             JSONArray enfermeros = (JSONArray) jsonObject.get("Enfermero");
-            Iterator<JSONObject> iteratorEnf = doctors.iterator();
+            Iterator iteratorEnf = doctors.iterator();
             JSONArray paramedicos = (JSONArray) jsonObject.get("Paramedico");
-            Iterator<JSONObject> iteratorPar = doctors.iterator();
+            Iterator iteratorPar = doctors.iterator();
 			while (iteratorDoc.hasNext()) {
-                iter = iteratorDoc.next();
+                iter = (JSONObject)iteratorDoc.next();
                 medico = new doctor((int) (long) iter.get("id"),
                                     (String) iter.get("nombre"),
                                     (String)iter.get("apellido"),
@@ -60,7 +60,7 @@ public class Main {
                 listaDoctores.add(medico);
             }
             while (iteratorEnf.hasNext()) {
-                iter = iteratorEnf.next();
+                iter = (JSONObject)iteratorEnf.next();
                 enf = new enfermero((int) (long) iter.get("id"),
                                     (String) iter.get("nombre"),
                                     (String)iter.get("apellido"),
@@ -70,7 +70,7 @@ public class Main {
                 listaEnfermeros.add(enf);
             }
             while (iteratorPar.hasNext()) {
-                iter = iteratorPar.next();
+                iter = (JSONObject)iteratorPar.next();
                 param = new paramedico((int) (long) iter.get("id"),
                                        (String) iter.get("nombre"),
                                        (String)iter.get("apellido"),
@@ -82,13 +82,13 @@ public class Main {
             obj = parser.parse(new FileReader("data/requerimientos.JSON"));
             jsonObject = (JSONObject) obj;
             JSONArray requerimientos = (JSONArray) jsonObject.get("requerimientos");
-            Iterator<JSONObject> iteratorReq = requerimientos.iterator();
+            Iterator iteratorReq = requerimientos.iterator();
             while (iteratorReq.hasNext()) {
-                iter = iteratorReq.next();
-                Iterator<JSONObject> pacientes =( (JSONArray) iter.get("pacientes")).iterator();
+                iter = (JSONObject)iteratorReq.next();
+                Iterator pacientes =( (JSONArray) iter.get("pacientes")).iterator();
                 HashMap<String, String> procedimientos = new HashMap<>(); 
                 while (pacientes.hasNext()) {
-                    iter1 = pacientes.next();
+                    iter1 = (JSONObject)pacientes.next();
                     Set keys = iter1.keySet();
                     Object[] llave = keys.toArray();
                     String llaveid = String.valueOf((String)llave[0]);
@@ -100,55 +100,51 @@ public class Main {
             obj = parser.parse(new FileReader("data/pacientes.JSON"));
             jsonObject = (JSONObject) obj;
             JSONArray pacientes = (JSONArray) jsonObject.get("Paciente");
-            Iterator<JSONObject> iteratorPac = pacientes.iterator();
-            System.out.println("Pacientes");
+            Iterator iteratorPac = pacientes.iterator();
             while (iteratorPac.hasNext()) { 
-                iter = iteratorPac.next();
-                System.out.println(iter.get("id"));
-                Iterator<JSONObject> iteratorDP =( (JSONArray) iter.get("datos personales")).iterator();
-                iter1 = iteratorDP.next();
+                iter = (JSONObject)iteratorPac.next();
+                Iterator iteratorDP =( (JSONArray) iter.get("datos personales")).iterator();
+                iter1 = (JSONObject)iteratorDP.next();
                 JSONArray arreglo = (JSONArray) iter.get("enfermedades");
                 for(int i = 0; i < arreglo.size(); i++){
                     enfermedades.add((String)arreglo.get(i));
                 }
-                Iterator<JSONObject> iteratorTRA =( (JSONArray) iter.get("tratamientos/procedimientos")).iterator();
-                iter3 = iteratorTRA.next();
+                Iterator iteratorTRA =( (JSONArray) iter.get("tratamientos/procedimientos")).iterator();
+                iter3 =(JSONObject)iteratorTRA.next();
                 arreglo = (JSONArray) iter3.get("asignados");
                 for(int i = 0; i < arreglo.size(); i++){
                     procAsignados.add((String)arreglo.get(i));
                 }
-                iter3 = iteratorTRA.next();
+                iter3 = (JSONObject)iteratorTRA.next();
                 arreglo = (JSONArray) iter3.get("completados");
                 for(int i = 0; i < arreglo.size(); i++){
                     procCompletados.add((String)arreglo.get(i));
                 }
-                Iterator<JSONObject> iteratorEXA =( (JSONArray) iter.get("examenes")).iterator();
-                iter4 = iteratorEXA.next();
+                Iterator iteratorEXA =( (JSONArray) iter.get("examenes")).iterator();
+                iter4 = (JSONObject)iteratorEXA.next();
                 arreglo = (JSONArray) iter4.get("realizados");
                 for(int i = 0; i < arreglo.size(); i++){
                     examRealizados.add((String)arreglo.get(i));
                 }
-                iter4 = iteratorEXA.next();
+                iter4 = (JSONObject)iteratorEXA.next();
                 arreglo = (JSONArray) iter4.get("no realizados");
                 for(int i = 0; i < arreglo.size(); i++){
                     examNorealizados.add((String)arreglo.get(i));
                 }
-                Iterator<JSONObject> iteratorMED =( (JSONArray) iter.get("medicamentos")).iterator();
-                iter5 = iteratorMED.next();
+                Iterator iteratorMED =( (JSONArray) iter.get("medicamentos")).iterator();
+                iter5 = (JSONObject)iteratorMED.next();
                 arreglo = (JSONArray) iter5.get("recetados");
                 for(int i = 0; i < arreglo.size(); i++){
                     medRecetados.add((String)arreglo.get(i));
                 }
-                iter5 = iteratorMED.next();
+                iter5 = (JSONObject)iteratorMED.next();
                 arreglo = (JSONArray) iter5.get("suministrados");
                 for(int i = 0; i < arreglo.size(); i++){
                     medSuministrados.add((String)arreglo.get(i));
                 }
                 pac = new paciente((String)iter1.get("nombre"),(String) iter1.get("rut"),Integer.parseInt((String)iter1.get("edad")),enfermedades,procAsignados,procCompletados,examRealizados,examNorealizados,medRecetados,medSuministrados);
                 listaPacientes.add(pac);
-            }
-            System.out.println("lo hice");
-            
+            }            
         } catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -30,7 +30,7 @@ JAR_FLAG = cvfm
 EXEC = Main.jar
 MANIFEST_PATH = ./META-INF
 LIBS = lib/json.jar
-JAVAC_COMPILE = $(JC) $(J_DIRECTORY_SOURCE) $(J_DIRECTORY_CLASS)
+JAVAC_COMPILE = $(JC) $(J_DIRECTORY_SOURCE) $(J_DIRECTORY_CLASS) 
 
 #-----------------------------------------------------------------------
 # Default Java compilation
