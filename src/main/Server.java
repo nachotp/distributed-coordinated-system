@@ -14,6 +14,7 @@ import java.net.URI;
 import java.util.*;
 
 import main.hospital.doctor;
+import main.hospital.paciente;
 
 import com.sun.net.httpserver.Headers;
 
@@ -48,6 +49,15 @@ public class Server {
         server.start();
     }
 
+    public boolean tryLock(int id){
+        paciente pac = Main.this.listaPacientes.get(id-1);
+        if (pac.locked)
+            return false;
+        pac.locked = true;
+        Main.this.listaPacientes.set(id - 1, pac);
+        return true;
+    }  
+
     public void pushChangeIfCoord(HashMap<String,String> data){
         if (cliente.coordinating)
             cliente.pushProcedure(data);
@@ -58,15 +68,15 @@ public class Server {
             URI uri = t.getRequestURI();
             HashMap<String,String> data = paramDeserializer(uri.getQuery());
             // Revisar LOCK
-
-            String response = "true";
+            boolean success = tryLock(Integer.valueOf(data.get("id")));
+            String response = String.valueOf(success);
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
 
-
-            pushChangeIfCoord(data);
+            if (success)
+                pushChangeIfCoord(data);
         }
     }
 

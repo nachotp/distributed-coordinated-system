@@ -12,6 +12,7 @@ import java.util.*;
 public class Main {
     public static requerimiento currReq;
     public static boolean coord;
+    public static List<paciente> listaPacientes;
     public static void main (String args[]) {
         Server server = new Server(); // nuevo servidor
         Client cliente = new Client(); // nuevo cliente
@@ -33,7 +34,7 @@ public class Main {
         List<enfermero> listaEnfermeros= new ArrayList<enfermero>();
         List<paramedico> listaParamedicos= new ArrayList<paramedico>();
         List<requerimiento> listaRequerimientos= new ArrayList<requerimiento>();
-        List<paciente> listaPacientes = new ArrayList<paciente>();
+        listaPacientes = new ArrayList<paciente>();
         List<String> enfermedades = new ArrayList<String>();
         List<String> procAsignados = new ArrayList<String>();
         List<String> procCompletados = new ArrayList<String>();
