@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -51,6 +52,13 @@ public class Client {
         return (max == age)? true : false;
     }
 
+    public boolean commitProcedure(HashMap<String, String> data){
+        String params = paramSerializer(data);
+        String url = IPs[coordinator];
+        return Boolean.valueOf(sendGet(url, "commit", params));
+    }
+
+
     // HTTP GET request
     public String sendGet(String url, String route) throws Exception {
         return sendGet(url, route, "");
@@ -89,6 +97,7 @@ public class Client {
 
     }
 
+    // SERIALIZACION DE PARAMETROS PARA PASO POR GET
     public String paramSerializer(HashMap<String, String> data){
         Iterator it = data.entrySet().iterator();
         String serialized = "?";

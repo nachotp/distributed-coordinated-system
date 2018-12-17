@@ -11,6 +11,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.net.URI;
+import java.util.HashMap;
 
 import main.hospital.doctor;
 
@@ -68,19 +69,20 @@ public class Server {
     }
 
 
-    private void createResponseFromQueryParams(URI uri) {
+    private HashMap<String, String> paramDeserializer(URI uri) {
         //Get the request query
+        HashMap<String, String> data = new HashMap<>();
         String query = uri.getQuery();
         if (query != null) {
-            System.out.println("Query: " + query);
+            System.out.println("Dese: " + query);
             String[] queryParams = query.split(AND_DELIMITER);
             if (queryParams.length > 0) {
                 for (String qParam : queryParams) {
                     String[] param = qParam.split(EQUAL_DELIMITER);
-                    
+                    data.put(param[0], param[1]);
                 }
             }
         }
-
+        return data;
     }
 }
