@@ -19,12 +19,12 @@ public class Client {
     int[] living;
     int coordinator;
 
-    Client() {
+    Client() { 
         this.IPs = new String[]{ "localhost:8000"};
         this.living = new int[IPs.length];
     }
 
-    public boolean heartbeat(int age) {
+    public boolean heartbeat(int age) { // Define nuevo coordinador y revisa que maquinas estan vivas
         int i = 0;
         int max = -1;
         int idx = -1;
@@ -53,7 +53,7 @@ public class Client {
         return (max == age)? true : false;
     }
 
-    public boolean commitProcedure(HashMap<String, String> data){
+    public boolean commitProcedure(HashMap<String, String> data){ // Envia cambio que se quiere al coordinador
         String params = paramSerializer(data);
         System.out.println("Comitting: "+params);
         String url = IPs[coordinator];
@@ -74,11 +74,11 @@ public class Client {
     }*/
 
     // HTTP GET request
-    public String sendGet(String url, String route) throws Exception {
+    public String sendGet(String url, String route) throws Exception { // Funcion generica para enviar queries por get sin parametros
         return sendGet(url, route, "");
     }
 
-    public String sendGet(String url, String route, String params) throws Exception {
+    public String sendGet(String url, String route, String params) throws Exception { // Funcion generica para enviar queries por get con parametros
         String urlReq = "http://" +url+ "/" + route;
         if (!params.equals("")) urlReq += "/" + params;
 
@@ -112,7 +112,7 @@ public class Client {
     }
 
     // SERIALIZACION DE PARAMETROS PARA PASO POR GET
-    public String paramSerializer(HashMap<String, String> data){
+    public String paramSerializer(HashMap<String, String> data){ // Serializa un HashMap como Query Get
         Iterator it = data.entrySet().iterator();
         String serialized = "?";
         while (it.hasNext()) {

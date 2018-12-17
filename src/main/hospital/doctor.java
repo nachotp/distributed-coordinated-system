@@ -16,5 +16,4 @@ public class doctor {
         experiencia = experience;
         estudios = studies;
     }
-    // List<fichaPaciente> listaPacientes= new ArrayList<fichaPaciente>();
 }

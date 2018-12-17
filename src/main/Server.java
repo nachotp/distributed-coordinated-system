@@ -26,11 +26,11 @@ public class Server {
     static doctor curDoctor;
     HttpServer server;
 
-    public void setDoc(doctor doc){
+    public void setDoc(doctor doc){ // Doctor actual realizando procedimientos
         curDoctor = doc;
     }
 
-    public void close(){
+    public void close(){ // Detiene el servidor
         server.stop(0);
     }
 
@@ -38,7 +38,7 @@ public class Server {
         cliente = cle;
     }
 
-    public void runServer() throws Exception {
+    public void runServer() throws Exception { // Inicia servidor y crea rutas
         server = HttpServer.create(new InetSocketAddress(8000), 0);
         System.out.println("Server inicializado.");
         server.createContext("/commit", new CommitHandler());
@@ -47,7 +47,7 @@ public class Server {
         server.start();
     }
 
-    class CommitHandler implements HttpHandler {
+    class CommitHandler implements HttpHandler { //Maneja solicitud de c ambios
         public void handle(HttpExchange t) throws IOException {
             Headers h = t.getResponseHeaders();
             URI uri = t.getRequestURI();
@@ -68,7 +68,7 @@ public class Server {
         }
     }
 
-    class AliveHandler implements HttpHandler {
+    class AliveHandler implements HttpHandler { //Responde con el doctor actual para saber que esta vivo y seleccionar coordinador
         public void handle(HttpExchange t) throws IOException {
             Headers h = t.getResponseHeaders();
             Integer exp = Server.this.curDoctor.estudios + Server.this.curDoctor.experiencia;
@@ -81,7 +81,7 @@ public class Server {
     }
 
 
-    private HashMap<String, String> paramDeserializer(String query) {
+    private HashMap<String, String> paramDeserializer(String query) { // Toma queryGet y la transforma en un HashMap
         //Get the request query
         HashMap<String, String> data = new HashMap<>();
         if (query != null) {
