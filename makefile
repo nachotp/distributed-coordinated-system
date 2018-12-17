@@ -40,7 +40,7 @@ default : run
 
 # Creation des .class dans le dossier bin.
 %.class: %.java
-	@$(JAVAC_COMPILE)  -cp $(LIBS) $*.java
+	@$(JAVAC_COMPILE) -cp $(LIBS) $*.java
 
 run: bin $(OBJ)
 	java -cp bin:$(LIBS) main.Main

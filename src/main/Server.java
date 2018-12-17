@@ -18,13 +18,18 @@ import com.sun.net.httpserver.Headers;
 public class Server {
 
     static doctor curDoctor;
+    HttpServer server;
 
     public void setDoc(doctor doc){
         curDoctor = doc;
     }
 
+    public void close(){
+        server.stop(0);
+    }
+
     public void runServer() throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+        server = HttpServer.create(new InetSocketAddress(8000), 0);
         System.out.println("Server inicializado.");
         server.createContext("/info", new InfoHandler());
         server.createContext("/heartbeat", new AliveHandler());

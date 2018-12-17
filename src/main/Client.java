@@ -21,7 +21,7 @@ public class Client {
         this.living = new int[IPs.length];
     }
 
-    public void heartbeat(int age) {
+    public boolean heartbeat(int age) {
         int i = 0;
         int max = -1;
         int idx = -1;
@@ -47,6 +47,7 @@ public class Client {
             }
         }
         this.coordinator = idx;
+        return (max == age)? true : false;
     }
 
     // HTTP GET request

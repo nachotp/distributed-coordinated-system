@@ -166,12 +166,12 @@ public class Main {
             currReq = listaRequerimientos.remove(0);
             doctor doc = listaDoctores.get(currReq.id-1);
             server.setDoc(doc);
-            cliente.heartbeat(doc.experiencia + doc.estudios);
+            wait = !cliente.heartbeat(doc.experiencia + doc.estudios);
 
             String dummy = scanner.nextLine();
             
         }
-
+        server.close();
     }
     
 }
