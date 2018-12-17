@@ -21,7 +21,7 @@ import com.sun.net.httpserver.Headers;
 public class Server {
 
     private static final String AND_DELIMITER = "&";
-    private static final String EQUAL_DELIMITER = " =";
+    private static final String EQUAL_DELIMITER = "=";
     public static Client cliente;
     public static Constants cte;
     static doctor curDoctor;
@@ -97,7 +97,9 @@ public class Server {
             String response;
             Headers h = t.getResponseHeaders();
             URI uri = t.getRequestURI();
+            System.out.println("handling request");
             HashMap<String,String> data = paramDeserializer(uri.getQuery());
+            System.out.println("handling request "+ data.get("id"));
             boolean success = tryLock(Integer.valueOf(data.get("id")));
             if (success) {
                 response = "true";
@@ -146,14 +148,14 @@ public class Server {
     private HashMap<String, String> paramDeserializer(String query) { // Toma query Get y la transforma en un HashMap
         //Get the request query
         HashMap<String, String> data = new HashMap<>();
-        if (query != null) {
+        if (query.length() > 0) {
             String[] queryParams = query.split(AND_DELIMITER);
-            if (queryParams.length > 0) {
-                for (String qParam : queryParams) {
-                    String[] param = qParam.split(EQUAL_DELIMITER);
-                    data.put(param[0], param[1]);
-                }
+            for (String qParam : queryParams) {
+                System.out.println(qParam);
+                String[] param = qParam.split(EQUAL_DELIMITER);
+                data.put(param[0], param[1]);
             }
+            
         }
         return data;
     }
