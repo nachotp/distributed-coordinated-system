@@ -154,14 +154,17 @@ public class Main {
         String id;
         String proc;
         HashMap<String, String> logInfo; 
+        Map.Entry pair;
+        
         while (!cte.listaRequerimientos.isEmpty()) { //LLevar a cabo requerimientos
             // Sincronizar doctores
             currReq = cte.listaRequerimientos.remove(0);
-
-            for (Map.Entry<String, String> entry : currReq.procedimientos.entrySet()) {
+            Iterator iter = cte.listaRequerimientos.iterator();
+           while (iter.hasNext()) {
+                pair = (Map.Entry) it.next();
                 logInfo = new HashMap<>();
-                id= entry.getKey();
-                proc = entry.getValue();
+                id= pair.getKey();
+                proc = epair.getValue();
                 splitter = proc.split(" ");
                 //Registrar info de log en Hashmap
                 logInfo.put("id",id);

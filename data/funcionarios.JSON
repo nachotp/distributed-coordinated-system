@@ -8,9 +8,9 @@
   
         "apellido": "Tobar", 
   
-        "estudios": 40 , 
+        "estudios": 1 , 
   
-        "experiencia": 33
+        "experiencia": 3
   
       }, 
   
@@ -20,9 +20,9 @@
   
       "apellido": "Alvarado", 
   
-      "estudios": 10, 
+      "estudios": 1, 
   
-      "experiencia": 25
+      "experiencia": 2
   
       },
   
@@ -32,9 +32,9 @@
   
       "apellido": "Rodriguez", 
   
-      "estudios": 15, 
+      "estudios": 4, 
   
-      "experiencia": 46
+      "experiencia": 1
   
       }],
   
