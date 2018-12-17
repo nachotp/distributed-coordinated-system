@@ -10,12 +10,17 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import java.net.URI;
 
 import main.hospital.doctor;
 
 import com.sun.net.httpserver.Headers;
 
 public class Server {
+
+    private static final String AND_DELIMITER = "&";
+    private static final String EQUAL_DELIMITER = "=";
+
 
     static doctor curDoctor;
     HttpServer server;
@@ -62,4 +67,20 @@ public class Server {
         }
     }
 
+
+    private void createResponseFromQueryParams(URI uri) {
+        //Get the request query
+        String query = uri.getQuery();
+        if (query != null) {
+            System.out.println("Query: " + query);
+            String[] queryParams = query.split(AND_DELIMITER);
+            if (queryParams.length > 0) {
+                for (String qParam : queryParams) {
+                    String[] param = qParam.split(EQUAL_DELIMITER);
+                    
+                }
+            }
+        }
+
+    }
 }
