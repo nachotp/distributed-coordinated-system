@@ -12,10 +12,12 @@ import java.util.*;
 public class Main {
     public static requerimiento currReq;
     public static boolean coord;
-    public static List<paciente> listaPacientes;
+    
     public static void main (String args[]) {
-        Server server = new Server(); // nuevo servidor
-        Client cliente = new Client(); // nuevo cliente
+        Constants cte = new Constants();
+        Client cliente = new Client(cte); // nuevo cliente
+        Server server = new Server(cliente, cte); // nuevo servidor
+        
         Scanner scanner = new Scanner(System.in); 
         JSONParser parser = new JSONParser();
         // definicion de variables varias
@@ -30,19 +32,7 @@ public class Main {
         paramedico param;
         requerimiento req;
         paciente pac;
-        List<doctor> listaDoctores= new ArrayList<doctor>();
-        List<enfermero> listaEnfermeros= new ArrayList<enfermero>();
-        List<paramedico> listaParamedicos= new ArrayList<paramedico>();
-        List<requerimiento> listaRequerimientos= new ArrayList<requerimiento>();
-        listaPacientes = new ArrayList<paciente>();
-        List<String> enfermedades = new ArrayList<String>();
-        List<String> procAsignados = new ArrayList<String>();
-        List<String> procCompletados = new ArrayList<String>();
-        List<String> examRealizados = new ArrayList<String>();
-        List<String> examNorealizados = new ArrayList<String>();
-        List<String> medRecetados = new ArrayList<String>();
-        List<String> medSuministrados = new ArrayList<String>();
-
+        
         try{
             Object obj = parser.parse(new FileReader("data/funcionarios.JSON")); // Leer JSON de funcionarios
             JSONObject jsonObject = (JSONObject) obj;
@@ -59,7 +49,7 @@ public class Main {
                                     (String)iter.get("apellido"),
                                     (int) (long)iter.get("experiencia"),
                                     (int) (long) iter.get("estudios"));
-                listaDoctores.add(medico);
+                cte.listaDoctores.add(medico);
             }
             while (iteratorEnf.hasNext()) { // Leer enfermeros
                 iter = (JSONObject)iteratorEnf.next();
@@ -69,7 +59,7 @@ public class Main {
                                     (int) (long)iter.get("experiencia"),
                                     (int) (long) iter.get("estudios"));
 
-                listaEnfermeros.add(enf);
+                cte.listaEnfermeros.add(enf);
             }
             while (iteratorPar.hasNext()) { //Leer paramedicos
                 iter = (JSONObject)iteratorPar.next();
@@ -79,7 +69,7 @@ public class Main {
                                        (int) (long)iter.get("experiencia"),
                                        (int) (long) iter.get("estudios"));
 
-                listaParamedicos.add(param);
+                cte.listaParamedicos.add(param);
             }
             obj = parser.parse(new FileReader("data/requerimientos.JSON")); //Leer JSON de requerimientos
             jsonObject = (JSONObject) obj;
@@ -97,7 +87,7 @@ public class Main {
                     procedimientos.put(llaveid,(String)iter1.get(llaveid));
                 }
                 req = new requerimiento((int) (long) iter.get("id"), (String)iter.get("cargo"), procedimientos);
-                listaRequerimientos.add(req);
+                cte.listaRequerimientos.add(req);
             }
             obj = parser.parse(new FileReader("data/pacientes.JSON")); // Leer JSON de pacientes
             jsonObject = (JSONObject) obj;
@@ -109,43 +99,45 @@ public class Main {
                 iter1 = (JSONObject)iteratorDP.next();
                 JSONArray arreglo = (JSONArray) iter.get("enfermedades");
                 for(int i = 0; i < arreglo.size(); i++){
-                    enfermedades.add((String)arreglo.get(i));
+                    cte.enfermedades.add((String)arreglo.get(i));
                 }
                 Iterator iteratorTRA =( (JSONArray) iter.get("tratamientos/procedimientos")).iterator();
                 iter3 =(JSONObject)iteratorTRA.next();
                 arreglo = (JSONArray) iter3.get("asignados");
                 for(int i = 0; i < arreglo.size(); i++){ //Agregar procedimientos asignados
-                    procAsignados.add((String)arreglo.get(i));
+                    cte.procAsignados.add((String)arreglo.get(i));
                 }
                 iter3 = (JSONObject)iteratorTRA.next();  //Agregar procedimientos completados
                 arreglo = (JSONArray) iter3.get("completados");
                 for(int i = 0; i < arreglo.size(); i++){
-                    procCompletados.add((String)arreglo.get(i));
+                    cte.procCompletados.add((String)arreglo.get(i));
                 }
                 Iterator iteratorEXA =( (JSONArray) iter.get("examenes")).iterator();
                 iter4 = (JSONObject)iteratorEXA.next(); 
                 arreglo = (JSONArray) iter4.get("realizados");
                 for(int i = 0; i < arreglo.size(); i++){//Agregar examenes realizados
-                    examRealizados.add((String)arreglo.get(i));
+                    cte.examRealizados.add((String)arreglo.get(i));
                 }
                 iter4 = (JSONObject)iteratorEXA.next();
                 arreglo = (JSONArray) iter4.get("no realizados");
                 for(int i = 0; i < arreglo.size(); i++){//Agregar no examenes realizados
-                    examNorealizados.add((String)arreglo.get(i));
+                    cte.examNorealizados.add((String)arreglo.get(i));
                 }
                 Iterator iteratorMED =( (JSONArray) iter.get("medicamentos")).iterator();
                 iter5 = (JSONObject)iteratorMED.next();
                 arreglo = (JSONArray) iter5.get("recetados");//Agregar medicamentos recetados
                 for(int i = 0; i < arreglo.size(); i++){
-                    medRecetados.add((String)arreglo.get(i));
+                    cte.medRecetados.add((String)arreglo.get(i));
                 }
                 iter5 = (JSONObject)iteratorMED.next();
                 arreglo = (JSONArray) iter5.get("suministrados"); //Agregar medicamentos suministrados
                 for(int i = 0; i < arreglo.size(); i++){
-                    medSuministrados.add((String)arreglo.get(i));
+                    cte.medSuministrados.add((String)arreglo.get(i));
                 }
-                pac = new paciente((String)iter1.get("nombre"),(String) iter1.get("rut"),Integer.parseInt((String)iter1.get("edad")),enfermedades,procAsignados,procCompletados,examRealizados,examNorealizados,medRecetados,medSuministrados);
-                listaPacientes.add(pac);
+                pac = new paciente((String)iter1.get("nombre"),(String) iter1.get("rut"),Integer.parseInt((String)iter1.get("edad")), cte.enfermedades, cte.procAsignados,
+                        cte.procCompletados, cte.examRealizados, cte.examNorealizados, cte.medRecetados,
+                        cte.medSuministrados);
+                cte.listaPacientes.add(pac);
             }            
         } catch (Exception e) {
 			e.printStackTrace();
@@ -162,9 +154,9 @@ public class Main {
         String id;
         String proc;
         HashMap<String, String> logInfo; 
-        while (!listaRequerimientos.isEmpty()) { //LLevar a cabo requerimientos
+        while (!cte.listaRequerimientos.isEmpty()) { //LLevar a cabo requerimientos
             // Sincronizar doctores
-            currReq = listaRequerimientos.remove(0);
+            currReq = cte.listaRequerimientos.remove(0);
 
             for (Map.Entry<String, String> entry : currReq.procedimientos.entrySet()) {
                 logInfo = new HashMap<>();
@@ -198,18 +190,18 @@ public class Main {
                 }
                 //Verificar el cargo del funcionario y actuar
                 if(currReq.cargo.equals("doctor")){
-                    doctor doc = listaDoctores.get(currReq.id-1);
+                    doctor doc = cte.listaDoctores.get(currReq.id-1);
                     System.out.println("soy el diostor");
                     cliente.commitProcedure(logInfo); //commit de la accion
                     server.setDoc(doc);
                     cliente.heartbeat(doc.experiencia + doc.estudios);
                 }
                 else if(currReq.cargo.equals("enfermero")){
-                    enfermero nurse = listaEnfermeros.get(currReq.id-1);
+                    enfermero nurse = cte.listaEnfermeros.get(currReq.id-1);
                     System.out.println("soy el nursito");
                 }
                 else{
-                    paramedico paramedic = listaParamedicos.get(currReq.id-1);
+                    paramedico paramedic = cte.listaParamedicos.get(currReq.id-1);
                     System.out.println("soy el paramedico");
                 }
                 
