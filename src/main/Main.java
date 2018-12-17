@@ -13,8 +13,8 @@ public class Main {
     public static requerimiento currReq;
     public static boolean coord;
     public static void main (String args[]) {
-        Server server = new Server();
         Client cliente = new Client();
+        Server server = new Server(cliente);
         Scanner scanner = new Scanner(System.in);
         JSONParser parser = new JSONParser();
         JSONObject iter;
@@ -164,7 +164,7 @@ public class Main {
             server.setDoc(doc);
             coord = cliente.heartbeat(doc.experiencia + doc.estudios);
             Iterator it = currReq.procedimientos.entrySet().iterator();
-            
+
             while (it.hasNext()) {
                 Map.Entry pair = (Map.Entry)it.next();
                 System.out.println(pair.getKey() + " = " + pair.getValue());

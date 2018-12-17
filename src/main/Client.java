@@ -58,6 +58,11 @@ public class Client {
         return Boolean.valueOf(sendGet(url, "commit", params));
     }
 
+    public boolean pushProcedure(HashMap<String, String> data) {
+        String params = paramSerializer(data);
+        String url = IPs[coordinator];
+        return Boolean.valueOf(sendGet(url, "commit", params));
+    }
 
     // HTTP GET request
     public String sendGet(String url, String route) throws Exception {

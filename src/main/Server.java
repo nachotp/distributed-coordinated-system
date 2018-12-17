@@ -21,7 +21,7 @@ public class Server {
 
     private static final String AND_DELIMITER = "&";
     private static final String EQUAL_DELIMITER = "=";
-
+    public Client cliente;
 
     static doctor curDoctor;
     HttpServer server;
@@ -34,20 +34,25 @@ public class Server {
         server.stop(0);
     }
 
+    Server(Client cle){
+        cliente = cle;
+    }
+
     public void runServer() throws Exception {
         server = HttpServer.create(new InetSocketAddress(8000), 0);
         System.out.println("Server inicializado.");
-        server.createContext("/info", new InfoHandler());
+        server.createContext("/commit", new CommitHandler());
         server.createContext("/heartbeat", new AliveHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
     }
 
-    class InfoHandler implements HttpHandler {
+    class CommitHandler implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
             Headers h = t.getResponseHeaders();
-            h.add("Content-Type", "application/json");
-            String response = "{response: 'Use /get to download a PDF'}";
+            URI uri = t.getRequestURI();
+            HashMap<String,String> data = paramDeserializer(uri.getQuery());
+            String response = "true";
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
@@ -58,7 +63,6 @@ public class Server {
     class AliveHandler implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
             Headers h = t.getResponseHeaders();
-            h.add("Content-Type", "application/json");
             Integer exp = Server.this.curDoctor.estudios + Server.this.curDoctor.experiencia;
             String response = exp.toString();
             t.sendResponseHeaders(200, response.length());
@@ -69,10 +73,9 @@ public class Server {
     }
 
 
-    private HashMap<String, String> paramDeserializer(URI uri) {
+    private HashMap<String, String> paramDeserializer(String query) {
         //Get the request query
         HashMap<String, String> data = new HashMap<>();
-        String query = uri.getQuery();
         if (query != null) {
             System.out.println("Dese: " + query);
             String[] queryParams = query.split(AND_DELIMITER);
