@@ -193,6 +193,8 @@ public class Main {
                     coord = cliente.heartbeat(doc.experiencia + doc.estudios);
                     if (coord) {
                         System.out.println("Asignado como coordinador.");
+                    } else {
+                        System.out.println("Asignado como seguidor.");
                     }
                 }
                 else if(currReq.cargo.equals("enfermero")){
@@ -203,6 +205,7 @@ public class Main {
                 }
                 
                 boolean commitSuccess = cliente.commitProcedure(logInfo);
+                
                 if (coord && commitSuccess){
                     cliente.pushProcedure(logInfo);
                 }
