@@ -97,9 +97,7 @@ public class Server {
             String response;
             Headers h = t.getResponseHeaders();
             URI uri = t.getRequestURI();
-            System.out.println("handling request");
             HashMap<String,String> data = paramDeserializer(uri.getQuery());
-            System.out.println("handling request "+ data.get("id"));
             boolean success = tryLock(Integer.valueOf(data.get("id")));
             if (success) {
                 response = "true";

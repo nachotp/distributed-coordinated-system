@@ -41,14 +41,11 @@ public class Client {
                         max = res;
                         idx = i;
                     }
-                    System.out.println(url + " is alive: "+ String.valueOf(res));
                 } else {
                     this.living[i] = -1;
-                    System.out.println(url + " is dead");
                 }
             } catch (Exception e) {
                 this.living[i] = -1;
-                System.out.println(url + " is dead ");
                 //e.printStackTrace();
             }
         }
