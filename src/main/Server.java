@@ -150,7 +150,6 @@ public class Server {
         if (query.length() > 0) {
             String[] queryParams = query.split(AND_DELIMITER);
             for (String qParam : queryParams) {
-                System.out.println(qParam);
                 String[] param = qParam.split(EQUAL_DELIMITER);
                 data.put(param[0], param[1]);
             }
