@@ -205,10 +205,14 @@ public class Main {
                 }
                 
                 boolean commitSuccess = cliente.commitProcedure(logInfo);
-                
+                cte.wait = true;
                 if (coord && commitSuccess){
                     cliente.pushProcedure(logInfo);
+                    cte.wait = false;
                 }
+
+                while (cte.wait);
+
                 String dummy = scanner.nextLine();
             
                 

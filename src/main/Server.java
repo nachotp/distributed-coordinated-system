@@ -122,6 +122,7 @@ public class Server {
             System.out.println("Aplicando cambios.");
             makeChanges(Integer.valueOf(data.get("id")), (String) data.get("accion"), (String) data.get("opcion"));
             unlock(Integer.valueOf(data.get("id")));
+            cte.wait = false;
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());

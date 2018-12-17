@@ -16,7 +16,7 @@ public class Constants {
     public List<String> examNorealizados;
     public List<String> medRecetados;
     public List<String> medSuministrados;
-
+    public boolean wait;
     Constants(){
         listaDoctores = new ArrayList<doctor>();
         listaEnfermeros = new ArrayList<enfermero>();
@@ -30,6 +30,7 @@ public class Constants {
         examNorealizados = new ArrayList<String>();
         medRecetados = new ArrayList<String>();
         medSuministrados = new ArrayList<String>();
+        wait = false;
     }
 
 }
