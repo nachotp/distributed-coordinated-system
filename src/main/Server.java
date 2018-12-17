@@ -21,7 +21,7 @@ public class Server {
 
     private static final String AND_DELIMITER = "&";
     private static final String EQUAL_DELIMITER = "=";
-    public Client cliente;
+    public static Client cliente;
 
     static doctor curDoctor;
     HttpServer server;
@@ -42,29 +42,48 @@ public class Server {
         server = HttpServer.create(new InetSocketAddress(8000), 0);
         System.out.println("Server inicializado.");
         server.createContext("/commit", new CommitHandler());
+        server.createContext("/pushed", new PushHandler());
         server.createContext("/heartbeat", new AliveHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
     }
 
+    public void pushChangeIfCoord(HashMap<String,String> data){
+        if (cliente.coordinating)
+            cliente.pushProcedure(data);
+    }
     class CommitHandler implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
             Headers h = t.getResponseHeaders();
             URI uri = t.getRequestURI();
             HashMap<String,String> data = paramDeserializer(uri.getQuery());
-            String response = "true";
+            // Revisar LOCK
 
-            Iterator it = data.entrySet().iterator();
-            String serialized = "?";
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry) it.next();
-                System.out.println(pair.getKey() + " = " + pair.getValue());
-            }
+            String response = "true";
+            t.sendResponseHeaders(200, response.length());
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+
+
+            pushChangeIfCoord(data);
+        }
+    }
+
+    class PushHandler implements HttpHandler {
+        public void handle(HttpExchange t) throws IOException {
+            Headers h = t.getResponseHeaders();
+            URI uri = t.getRequestURI();
+            HashMap<String, String> data = paramDeserializer(uri.getQuery());
+            String response = "true";
+            // CAMBIO AL PACIENTE
+
 
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
+
         }
     }
 

@@ -17,11 +17,13 @@ public class Client {
     private final String USER_AGENT = "Mozilla/5.0";
     private String[] IPs;
     int[] living;
+    public boolean coordinating;
     int coordinator;
 
     Client() {
         this.IPs = new String[]{ "localhost:8000"};
         this.living = new int[IPs.length];
+        this.coordinating = false;
     }
 
     public boolean heartbeat(int age) {
@@ -50,7 +52,8 @@ public class Client {
             }
         }
         this.coordinator = idx;
-        return (max == age)? true : false;
+        coordinating = (max == age) ? true : false;
+        return coordinating;
     }
 
     public boolean commitProcedure(HashMap<String, String> data){
