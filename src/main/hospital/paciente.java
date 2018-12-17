@@ -5,13 +5,13 @@ public class paciente{
     private String  rut;
     public static boolean locked;
     private int  edad;
-    private List<String> enfermedades;
-    private List<String> procAsignados;
-    private List<String> procCompletados;
-    private List<String> examRealizados;
-    private List<String> examNorealizados;
-    private List<String> medRecetados;
-    private List<String> medSuministrados;
+    public List<String> enfermedades;
+    public List<String> procAsignados;
+    public List<String> procCompletados;
+    public List<String> examRealizados;
+    public List<String> examNorealizados;
+    public List<String> medRecetados;
+    public List<String> medSuministrados;
     public paciente(String name, String iden, int age, List<String> enf, List<String> procA,List<String> procC, List<String> examR, List<String> examN, List<String> medR, List<String> medS) {
         nombre = name;
         rut = iden;

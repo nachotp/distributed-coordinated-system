@@ -87,30 +87,23 @@ public class Server {
     public void unlock(int id){
         paciente pac = cte.listaPacientes.get(id - 1);
         pac.locked = false;
-        System.out.println("Paciente " + String.valueOf(id - 1) + " desbloqueado");
+        System.out.println("Paciente " + String.valueOf(id) + " desbloqueado");
         cte.listaPacientes.set(id - 1, pac);
     }
 
-    public void pushChangeIfCoord(HashMap<String,String> data){
 
-        if (cliente.coordinating)
-            cliente.pushProcedure(data);
-    }
     class CommitHandler implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
             Headers h = t.getResponseHeaders();
             URI uri = t.getRequestURI();
             HashMap<String,String> data = paramDeserializer(uri.getQuery());
-            makeChanges(Integer.valueOf(data.get("id")), (String)data.get("accion"),(String)data.get("opcion"));
             boolean success = tryLock(Integer.valueOf(data.get("id")));
             String response = String.valueOf(success);
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
-
-            if (success)
-                pushChangeIfCoord(data);
+            System.out.println("Enviando cambios");
         }
     }
 
@@ -121,8 +114,9 @@ public class Server {
             HashMap<String, String> data = paramDeserializer(uri.getQuery());
             String response = "true";
             // CAMBIO AL PACIENTE
-
-
+            System.out.println("Aplicando cambios.");
+            makeChanges(Integer.valueOf(data.get("id")), (String) data.get("accion"), (String) data.get("opcion"));
+            unlock(Integer.valueOf(data.get("id")));
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());

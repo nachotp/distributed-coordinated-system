@@ -146,7 +146,7 @@ public class Main {
         try {
             server.runServer(); //correr servidor
         } catch (Exception e) {}
-
+        System.out.println("Presisone Enter para comenzar...");
         scanner.nextLine();
 
         boolean wait = false;
@@ -168,11 +168,9 @@ public class Main {
                 logInfo.put("opcion",splitter[1]);
                 switch (splitter[0]) { //ver cual es el procedimiento
                     case "recetar":
-                        System.out.println("recetandole al zapo qlo");
                         logInfo.put("accion","1");
                         break;
                     case "suministrar":
-                        System.out.println("suministrandole al zapo qlo");
                         logInfo.put("accion","2");
                         break;
                     case "colocar":
@@ -191,22 +189,23 @@ public class Main {
                 //Verificar el cargo del funcionario y actuar
                 if(currReq.cargo.equals("doctor")){
                     doctor doc = cte.listaDoctores.get(currReq.id-1);
-                    System.out.println("soy el diostor");
-                    cliente.commitProcedure(logInfo); //commit de la accion
                     server.setDoc(doc);
-                    cliente.heartbeat(doc.experiencia + doc.estudios);
+                    coord = cliente.heartbeat(doc.experiencia + doc.estudios);
+                    if (coord) {
+                        System.out.println("Asignado como coordinador.");
+                    }
                 }
                 else if(currReq.cargo.equals("enfermero")){
                     enfermero nurse = cte.listaEnfermeros.get(currReq.id-1);
-                    System.out.println("soy el nursito");
                 }
                 else{
                     paramedico paramedic = cte.listaParamedicos.get(currReq.id-1);
-                    System.out.println("soy el paramedico");
                 }
                 
-                cliente.commitProcedure(logInfo);
-
+                boolean commitSuccess = cliente.commitProcedure(logInfo);
+                if (coord && commitSuccess){
+                    cliente.pushProcedure(logInfo);
+                }
                 String dummy = scanner.nextLine();
             
                 

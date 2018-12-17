@@ -22,7 +22,7 @@ public class Client {
 
     Client(Constants cte) {
         this.cte = cte;
-        this.IPs = new String[]{ "localhost:8000"};
+        this.IPs = new String[]{ "192.168.1.115:8000", "192.168.1.116:8000"};
         this.living = new int[IPs.length];
         this.coordinating = false;
     }
@@ -76,22 +76,11 @@ public class Client {
         for (int i = 0; i < IPs.length; i++) {
             String url = IPs[i];
             try {
-                int res = Integer.valueOf(sendGet(url, "heartbeat"));
-                if (res > 0) {
-                    this.living[i] = res;
-                    if (max < res) {
-                        max = res;
-                        idx = i;
-                    }
-                    System.out.println(url + " is alive: " + String.valueOf(res));
-                } else {
-                    this.living[i] = -1;
-                    System.out.println(url + " is dead");
-                }
+                System.out.println("Pusheando a "+ url);
+                sendGet(url, "pushed", params);
+                
             } catch (Exception e) {
-                this.living[i] = -1;
-                System.out.println(url + " is dead ");
-                // e.printStackTrace();
+                e.printStackTrace();
             }
         }
         return true; //Boolean.valueOf(sendGet(url, "commit", params));
