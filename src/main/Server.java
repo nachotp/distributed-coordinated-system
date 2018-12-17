@@ -48,15 +48,11 @@ public class Server {
         server.start();
     }
 
-<<<<<<< HEAD
     public void pushChangeIfCoord(HashMap<String,String> data){
         if (cliente.coordinating)
             cliente.pushProcedure(data);
     }
     class CommitHandler implements HttpHandler {
-=======
-    class CommitHandler implements HttpHandler { //Maneja solicitud de c ambios
->>>>>>> a9670292a7356d1ea73dfbb3f8fa9be52cf27afc
         public void handle(HttpExchange t) throws IOException {
             Headers h = t.getResponseHeaders();
             URI uri = t.getRequestURI();
