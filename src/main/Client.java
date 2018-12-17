@@ -73,7 +73,27 @@ public class Client {
 
     public boolean pushProcedure(HashMap<String, String> data) {
         String params = paramSerializer(data);
-        String url = IPs[coordinator];
+        for (int i = 0; i < IPs.length; i++) {
+            String url = IPs[i];
+            try {
+                int res = Integer.valueOf(sendGet(url, "heartbeat"));
+                if (res > 0) {
+                    this.living[i] = res;
+                    if (max < res) {
+                        max = res;
+                        idx = i;
+                    }
+                    System.out.println(url + " is alive: " + String.valueOf(res));
+                } else {
+                    this.living[i] = -1;
+                    System.out.println(url + " is dead");
+                }
+            } catch (Exception e) {
+                this.living[i] = -1;
+                System.out.println(url + " is dead ");
+                // e.printStackTrace();
+            }
+        }
         return true; //Boolean.valueOf(sendGet(url, "commit", params));
     }
 
