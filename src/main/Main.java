@@ -163,7 +163,7 @@ public class Main {
             pair = (Map.Entry) iteri.next();
            while (iteri.hasNext()) {
                 logInfo = new HashMap<>();
-                if(!wait || !first){
+                if(!wait && !first){
                     pair = (Map.Entry) iteri.next();
                     first = false;
                 } 
