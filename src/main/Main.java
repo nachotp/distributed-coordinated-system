@@ -154,14 +154,14 @@ public class Main {
         String id;
         String proc;
         HashMap<String, String> logInfo; 
-        
+        Map.Entry pair;
         while (!cte.listaRequerimientos.isEmpty()) { //LLevar a cabo requerimientos
             // Sincronizar doctores
             currReq = cte.listaRequerimientos.remove(0);
             Iterator iteri = (currReq.procedimientos.entrySet()).iterator();
            while (iteri.hasNext()) {
                 logInfo = new HashMap<>();
-                Map.Entry pair = (Map.Entry) iteri.next();
+                if(!wait) pair = (Map.Entry) iteri.next();
                 id= (String)pair.getKey();
                 proc = (String)pair.getValue();
                 splitter = proc.split(" ");
@@ -213,9 +213,7 @@ public class Main {
                     cliente.pushProcedure(logInfo);
                     cte.wait = false;
                 }
-
-                while (cte.wait);
-
+                
                 String dummy = scanner.nextLine();
             
                 

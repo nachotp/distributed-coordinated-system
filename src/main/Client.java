@@ -42,6 +42,7 @@ public class Client {
                         max = res;
                         idx = i;
                     }
+                    System.out.println(url + " "+String.valueOf(res));
                 } else {
                     this.living[i] = -1;
                 }
