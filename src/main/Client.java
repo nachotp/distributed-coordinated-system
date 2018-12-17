@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.*;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import com.sun.net.httpserver.Authenticator.Success;
 
 public class Client {
 
@@ -18,12 +20,7 @@ public class Client {
     int coordinator;
 
     Client() {
-<<<<<<< HEAD
-        this.IPs = new String[]{ "localhost:8000", "192.168.10.2:8000"};
-=======
-        this.IPs = new String[]{ "localhost:8000","192.168.1.115:8000"};
-
->>>>>>> 9bc14a5431d19c04917b1a749f9d6d15bac96113
+        this.IPs = new String[]{ "localhost:8000"};
         this.living = new int[IPs.length];
     }
 
@@ -58,15 +55,23 @@ public class Client {
 
     public boolean commitProcedure(HashMap<String, String> data){
         String params = paramSerializer(data);
+        System.out.println("Comitting: "+params);
         String url = IPs[coordinator];
-        return Boolean.valueOf(sendGet(url, "commit", params));
+        boolean success;
+        try {
+            success = Boolean.valueOf(sendGet(url, "commit", params));
+        } catch (Exception e) {
+            success = false;
+            e.printStackTrace();
+        }
+        return success;
     }
 
-    public boolean pushProcedure(HashMap<String, String> data) {
+    /*public boolean pushProcedure(HashMap<String, String> data) {
         String params = paramSerializer(data);
         String url = IPs[coordinator];
         return Boolean.valueOf(sendGet(url, "commit", params));
-    }
+    }*/
 
     // HTTP GET request
     public String sendGet(String url, String route) throws Exception {

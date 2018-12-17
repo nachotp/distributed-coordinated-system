@@ -155,8 +155,7 @@ public class Main {
 
         scanner.nextLine();
 
-<<<<<<< HEAD
-        wait = false;
+        boolean wait = false;
         String[] splitter;
         String id;
         String proc;
@@ -164,7 +163,9 @@ public class Main {
         while (!listaRequerimientos.isEmpty()) {
             // Sincronizar doctores
             currReq = listaRequerimientos.remove(0);
+
             for (Map.Entry<String, String> entry : currReq.procedimientos.entrySet()) {
+                logInfo = new HashMap<>();
                 id= entry.getKey();
                 proc = entry.getValue();
                 splitter = proc.split(" ");
@@ -173,23 +174,23 @@ public class Main {
                 switch (splitter[0]) {
                     case "recetar":
                         System.out.println("recetandole al zapo qlo");
-                        logInfo.put("accion",1);
+                        logInfo.put("accion","1");
                         break;
                     case "suministrar":
                         System.out.println("suministrandole al zapo qlo");
-                        logInfo.put("accion",2);
+                        logInfo.put("accion","2");
                         break;
                     case "colocar":
-                        logInfo.put("accion",3);
+                        logInfo.put("accion","3");
                         break;
                     case "solicitar":
-                        logInfo.put("accion",4);
+                        logInfo.put("accion","4");
                         break;
                     case "pedir":
-                        logInfo.put("accion",5);
+                        logInfo.put("accion","5");
                         break;
                     case "realizar":
-                        logInfo.put("accion",6);
+                        logInfo.put("accion","6");
                         break;
                 }
                 if(currReq.cargo.equals("doctor")){
@@ -206,29 +207,14 @@ public class Main {
                     paramedico paramedic = listaParamedicos.get(currReq.id-1);
                     System.out.println("soy el paramedico");
                 }
+                
+                cliente.commitProcedure(logInfo);
+
                 String dummy = scanner.nextLine();
             
                 
             }
             
-=======
-        coord = false;
-
-        while (!listaRequerimientos.isEmpty()) {
-            // Sincronizar doctores
-            currReq = listaRequerimientos.remove(0);
-            doctor doc = listaDoctores.get(currReq.id-1);
-            server.setDoc(doc);
-            coord = cliente.heartbeat(doc.experiencia + doc.estudios);
-            Iterator it = currReq.procedimientos.entrySet().iterator();
-
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
-                System.out.println(pair.getKey() + " = " + pair.getValue());
-            }
-
-            String dummy = scanner.nextLine();
->>>>>>> 9bc14a5431d19c04917b1a749f9d6d15bac96113
         }
 
         server.close();

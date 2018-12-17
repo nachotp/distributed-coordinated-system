@@ -11,7 +11,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.net.URI;
-import java.util.HashMap;
+import java.util.*;
 
 import main.hospital.doctor;
 
@@ -53,6 +53,14 @@ public class Server {
             URI uri = t.getRequestURI();
             HashMap<String,String> data = paramDeserializer(uri.getQuery());
             String response = "true";
+
+            Iterator it = data.entrySet().iterator();
+            String serialized = "?";
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                System.out.println(pair.getKey() + " = " + pair.getValue());
+            }
+
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
@@ -77,7 +85,6 @@ public class Server {
         //Get the request query
         HashMap<String, String> data = new HashMap<>();
         if (query != null) {
-            System.out.println("Dese: " + query);
             String[] queryParams = query.split(AND_DELIMITER);
             if (queryParams.length > 0) {
                 for (String qParam : queryParams) {
